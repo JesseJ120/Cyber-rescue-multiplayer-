@@ -1,0 +1,9 @@
+{
+  "name": "cyber-rescue-multiplayer",
+  "version": "0.7.0",
+  "private": true,
+  "description": "Cyber Rescue multiplayer school competition prototype",
+  "main": "server.js",
+  "scripts": {"start": "node server.js"},
+  "dependencies": {"express": "^5.1.0", "socket.io": "^4.8.1"}
+}
