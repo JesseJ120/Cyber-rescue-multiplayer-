@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: cyber-rescue-multiplayer
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
