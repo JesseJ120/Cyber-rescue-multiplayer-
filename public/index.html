@@ -120,5 +120,34 @@ const result=$("result");result.innerHTML='';if(!s.mission.active&&(s.mission.ph
 $("random").onclick=()=>room.value=Math.random().toString(36).slice(2,6).toUpperCase();$("join").onclick=()=>{if(!room.value)room.value=Math.random().toString(36).slice(2,6).toUpperCase();socket.emit('joinRoom',{code:room.value,name:name.value,role:selectedRole})};$("ready").onclick=()=>{ready=!ready;socket.emit('update',{name:name.value,role:selectedRole,ready})};$("start").onclick=()=>socket.emit('startGame');$("ability").onclick=()=>socket.emit('ability');$("repair").onclick=()=>socket.emit('repair');
 $("chatSend").onclick=()=>{const i=$("chatInput");if(i.value.trim()){addChat('You',i.value.trim());i.value=''}};$("chatInput").addEventListener('keydown',e=>{if(e.key==='Enter')$("chatSend").click()});function addChat(who,msg){const log=$("chatLog"),d=document.createElement('div');d.className='chatmsg';d.innerHTML=`<b>${esc(who)}:</b> ${esc(msg)}`;log.appendChild(d);while(log.children.length>10)log.removeChild(log.firstChild);log.scrollTop=log.scrollHeight}
 socket.on('connect',()=>{$("connection").innerHTML='<i></i> ONLINE'});socket.on('disconnect',()=>{$("connection").innerHTML='○ OFFLINE';});socket.on('joined',x=>{overlay.classList.add('hidden');$("roomTop").textContent=x.code;addChat('AI','Joined room '+x.code+'. Coordinate with your team.')});socket.on('errorMessage',x=>{$("overlayMessage").textContent=x;addChat('AI',x)});socket.on('state',render);
+  // PASTE THE NEW DEMO-CHARACTER MOVEMENT CODE HERE
+
+const demoPlayers = document.querySelectorAll('.demo-player');
+
+demoPlayers.forEach((player, index) => {
+  let x = [20, 75, 25, 75][index];
+  let y = [35, 30, 70, 70][index];
+
+  const directions = [
+    { dx: 0.12, dy: 0.08 },
+    { dx: -0.10, dy: 0.11 },
+    { dx: 0.11, dy: -0.09 },
+    { dx: -0.12, dy: -0.08 }
+  ];
+
+  const direction = directions[index];
+
+  setInterval(() => {
+    x += direction.dx;
+    y += direction.dy;
+
+    if (x < 10 || x > 85) direction.dx *= -1;
+    if (y < 15 || y > 80) direction.dy *= -1;
+
+    player.style.left = x + '%';
+    player.style.top = y + '%';
+  }, 80);
+});
+
 const keys=new Set();addEventListener('keydown',e=>{if(['INPUT','SELECT','BUTTON'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){e.preventDefault();keys.add(k)}});addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));setInterval(()=>{if(!me||!state)return;let dx=0,dy=0;if(keys.has('w')||keys.has('arrowup'))dy-=1;if(keys.has('s')||keys.has('arrowdown'))dy+=1;if(keys.has('a')||keys.has('arrowleft'))dx-=1;if(keys.has('d')||keys.has('arrowright'))dx+=1;if(dx||dy){const speed=me.boost?8:5;me.x=Math.max(35,Math.min(680,me.x+dx*speed));me.y=Math.max(100,Math.min(485,me.y+dy*speed));socket.emit('update',{x:me.x,y:me.y})}},80);
 </script></body></html>
