@@ -43,6 +43,45 @@
   .screen-right { right: 12px; }
   .bottom { left: 12px; right: 12px; }
 }
+
+  /* Cyber Rescue character positioning */
+.dashboard-preview {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.demo-player {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid #22d3ee;
+  border-radius: 50%;
+  background: rgba(5, 20, 45, 0.9);
+  box-shadow: 0 0 18px #22d3ee88;
+  font-size: 27px;
+  transition: left 0.2s ease, top 0.2s ease;
+}
+
+.demo-player::after {
+  content: attr(data-name);
+  position: absolute;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.dp1 { left: 20%; top: 35%; }
+.dp2 { left: 75%; top: 30%; }
+.dp3 { left: 25%; top: 70%; }
+.dp4 { left: 75%; top: 70%; }
 </style></head><body><main class="app"><div class="shell">
 <header class="topbar"><div><div class="brand">CYBER <span>RESCUE</span></div><div class="tag">TEAM UP • DEFEND • RESTORE • AI ASSISTED</div></div><div class="topstats"><div class="stat"><small>Players</small><strong id="playerCount">0/8</strong></div><div class="stat"><small>Room Code</small><strong id="roomTop" class="cyan">----</strong></div><div class="stat"><small>Mission Score</small><strong id="scoreTop" class="yellow">0</strong></div><div class="stat"><small>Threat</small><strong id="threatTop" class="green">LOW</strong></div></div><div class="status"><span class="online" id="connection"><i></i> ONLINE</span><div class="tag">COMMAND CENTER</div></div></header>
 <section class="layout">
