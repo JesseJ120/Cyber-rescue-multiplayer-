@@ -121,6 +121,7 @@ $("random").onclick=()=>room.value=Math.random().toString(36).slice(2,6).toUpper
 $("chatSend").onclick=()=>{const i=$("chatInput");if(i.value.trim()){addChat('You',i.value.trim());i.value=''}};$("chatInput").addEventListener('keydown',e=>{if(e.key==='Enter')$("chatSend").click()});function addChat(who,msg){const log=$("chatLog"),d=document.createElement('div');d.className='chatmsg';d.innerHTML=`<b>${esc(who)}:</b> ${esc(msg)}`;log.appendChild(d);while(log.children.length>10)log.removeChild(log.firstChild);log.scrollTop=log.scrollHeight}
 socket.on('connect',()=>{$("connection").innerHTML='<i></i> ONLINE'});socket.on('disconnect',()=>{$("connection").innerHTML='○ OFFLINE';});socket.on('joined',x=>{overlay.classList.add('hidden');$("roomTop").textContent=x.code;addChat('AI','Joined room '+x.code+'. Coordinate with your team.')});socket.on('errorMessage',x=>{$("overlayMessage").textContent=x;addChat('AI',x)});socket.on('state',render);
   // PASTE THE NEW DEMO-CHARACTER MOVEMENT CODE HERE
+  
 
 const demoPlayers = document.querySelectorAll('.demo-player');
 
