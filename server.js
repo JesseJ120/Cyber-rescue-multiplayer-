@@ -59,7 +59,15 @@ io.on('connection', socket => {
 
 setInterval(()=>{
   for(const room of rooms.values()){
-    for(const p of room.players.values()) p.cooldown=Math.max(0,p.cooldown-1);
+    for(const p of room.players.values()) {
+  p.cooldown=Math.max(0,p.cooldown-1);
+
+  if(p.shieldTime>0) {
+    p.shieldTime--;
+    if(p.shieldTime===0) p.shield=false;
+  }
+}
+    
     if(!room.mission.active) { broadcast(room); continue; }
     room.mission.timer-=1;
     if(Math.random()<0.12) spawnPowerup(room);
