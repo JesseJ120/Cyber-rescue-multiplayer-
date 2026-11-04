@@ -84,7 +84,34 @@ setInterval(()=>{
     if(Math.random()<0.12) spawnPowerup(room);
     if(Math.random()<0.22) room.mission.threat=Math.min(100,room.mission.threat+2);
     if(room.mission.timer%35===0) spawnWave(room);
+    
+    // NEW AUTOMATIC SHOOTING CODE GOES HERE
+    for(const p of room.players.values()){
+  if(p.shootCooldown>0) continue;
+
+  const targets=room.enemies.filter(e=>e.disabled<=0);
+  if(!targets.length) continue;
+
+  const target=targets.reduce((a,b)=>
+    distance(a,p)<distance(b,p)?a:b
+  );
+
+  const d=distance(target,p);
+
+  if(d<=260){
+    target.hp-=25;
+    p.shootCooldown=1;
+    p.score+=10;
+
+    if(target.hp<=0){
+      room.enemies=room.enemies.filter(e=>e!==target);
+      p.score+=50;
+      room.mission.message='Hacker bot eliminated!';
+    }
+  }
+}
     for(const e of room.enemies){
+       // existing enemy movement code stays here
       if(e.disabled>0){e.disabled-=1;continue;}
       const targets=[...room.players.values()].filter(p=>!p.shield); if(!targets.length)continue;
       const t=targets.reduce((a,b)=>distance(a,e)<distance(b,e)?a:b); const d=distance(t,e);
