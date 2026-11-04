@@ -30,7 +30,17 @@ function snapshot(room) { return { room: room.code, players: [...room.players.va
 function broadcast(room) { io.to(room.code).emit('state', snapshot(room)); }
 function spawnPowerup(room) { if (room.powerups.length >= 4) return; const types=['shield','boost','repair','freeze']; room.powerups.push({id:Math.random().toString(36).slice(2),type:types[Math.floor(Math.random()*types.length)],x:90+Math.random()*560,y:125+Math.random()*330}); }
 function spawnWave(room) { room.mission.wave += 1; const count = Math.min(2 + room.mission.wave, 7); for(let i=0;i<count;i++){ const edge=Math.floor(Math.random()*4); let x,y; if(edge===0){x=55;y=115+Math.random()*350} else if(edge===1){x=650;y=115+Math.random()*350} else if(edge===2){x=70+Math.random()*560;y=105} else {x=70+Math.random()*560;y=475} room.enemies.push({id:'h'+room.nextEnemyId++,x,y,hp:100,speed:0.8+Math.random()*0.35,disabled:0}); } room.mission.threat=Math.min(100,room.mission.threat+7); room.mission.message=`Hacker wave ${room.mission.wave} detected!`; }
-function resetPlayers(room){ for(const p of room.players.values()){p.score=0;p.shield=false;p.boost=false;p.cooldown=0;p.x=90+Math.random()*560;p.y=125+Math.random()*330;} }
+function resetPlayers(room){
+  for(const p of room.players.values()){
+    p.score=0;
+    p.shield=false;
+    p.boost=false;
+    p.cooldown=0;
+    p.shootCooldown=0;
+    p.x=90+Math.random()*560;
+    p.y=125+Math.random()*330;
+  }
+}
 function endMission(room,phase,message){room.mission.active=false;room.mission.phase=phase;room.mission.message=message;broadcast(room);}
 
 io.on('connection', socket => {
