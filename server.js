@@ -70,7 +70,8 @@ io.on('connection', socket => {
 setInterval(()=>{
   for(const room of rooms.values()){
     for(const p of room.players.values()) {
-  p.cooldown=Math.max(0,p.cooldown-1);
+       p.cooldown=Math.max(0,p.cooldown-1);
+      p.shootCooldown=Math.max(0,p.shootCooldown-1);
 
   if(p.shieldTime>0) {
     p.shieldTime--;
