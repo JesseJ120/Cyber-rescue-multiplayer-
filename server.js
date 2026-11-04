@@ -41,7 +41,7 @@ io.on('connection', socket => {
     if(socket.data.room){const old=getRoom(socket.data.room);if(old){old.players.delete(socket.id);if(!old.players.size)rooms.delete(old.code);else broadcast(old);}}
     socket.join(code); socket.data.room=code;
     const roleIndex=Number.isInteger(role)?Math.max(0,Math.min(3,role)):room.players.size%4;
-    room.players.set(socket.id,{id:socket.id,name:String(name||`Player ${room.players.size+1}`).slice(0,18),role:roleIndex,x:90+Math.random()*560,y:125+Math.random()*330,score:0,ready:false,shield:false,boost:false,cooldown:0,onlineAt:Date.now()});
+    room.players.set(socket.id,{id:socket.id,name:String(name||`Player ${room.players.size+1}`).slice(0,18),role:roleIndex,x:90+Math.random()*560,y:125+Math.random()*330,score:0,ready:false,shield:false,boost:false,cooldown:0,shootCooldown:0,onlineAt:Date.now()});
     socket.emit('joined',{code}); broadcast(room);
   });
   socket.on('update',data=>{const room=getRoom(socket.data.room),p=room?.players.get(socket.id);if(!p||!data)return;if(Number.isFinite(data.x))p.x=Math.max(35,Math.min(680,data.x));if(Number.isFinite(data.y))p.y=Math.max(100,Math.min(485,data.y));if(typeof data.name==='string')p.name=data.name.slice(0,18)||p.name;if(Number.isInteger(data.role)&&data.role>=0&&data.role<4)p.role=data.role;if(typeof data.ready==='boolean')p.ready=data.ready;broadcast(room);});
