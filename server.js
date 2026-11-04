@@ -98,11 +98,12 @@ setInterval(()=>{
 
   const d=distance(target,p);
 
-  if(d<=260){
-    target.hp-=25;
-    p.shootCooldown=1;
-    p.score+=10;
-
+    if(d<=260){
+      target.hp-=25;
+     room.mission.message=`🔫 Soldier fired! Hacker health: ${Math.max(0,target.hp)}`;
+     p.shootCooldown=1;
+     p.score+=10;
+   
     if(target.hp<=0){
       room.enemies=room.enemies.filter(e=>e!==target);
       p.score+=50;
